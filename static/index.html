@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simulated annealing</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="./style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="./socket.io.js"></script>
+    <script src="./scripts.js" ></script>
+</head>
+<body>
+
+<nav class="navbar navbar-light bg-light">
+    <div class = "navbar-header">
+        <a class = "navbar-brand" >Simulated annealing</a>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="centrcontainer" >
+        <h2 class="text">Data input:</h2> <br>
+        <button type="button" class="btn btn-secondary inputbt" id="mf">Manual filling</button>
+        <button type="button" class="btn btn-secondary inputbt" id="ff">File</button>
+    
+        <div id="inputsettings" class="settings" hidden>
+            <div>
+                <div class="input-group mb-3 stg1" style="width: 500px;">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">Adjacency table sizes</span>
+                    </div>
+                    <input type="number" min="2" max="13" class="form-control" placeholder="Size" aria-label="" aria-describedby="basic-addon1" id="stginp">
+                </div>
+                <div style="width: 1020px; ">
+                    <div class="input-group mb-3 stg1" style="width: 300px; display: inline-flex;">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon2">Tmin</span>
+                        </div>
+                        <input type="number" min="2" class="form-control" placeholder="Tmin" aria-label="" aria-describedby="basic-addon2" id="tmin">
+                    </div>
+                    <div class="input-group mb-3 stg1" style="width: 300px; display: inline-flex;">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon3">Tmax</span>
+                        </div>
+                        <input type="number" min="2" class="form-control" placeholder="Tmax" aria-label="" aria-describedby="basic-addon3" id="tmax">
+                    </div>
+                    <div class="input-group mb-3 stg1" style="width: 300px; display: inline-flex;">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon4">Steps</span>
+                        </div>
+                        <input type="number" min="2" class="form-control" placeholder="Steps" aria-label="" aria-describedby="basic-addon4" id="steps">
+                    </div>
+                </div>
+                <!-- <button id="stgbt" type="button" class="btn btn-primary inputbt">Manual filling</button> -->
+                <table id="inputtb" class="table"></table>
+                <button hidden type="button" class="btn btn-primary" id="calculate">Calculate</button>
+            </div>
+        </div>
+    </div>
+    
+</div>
+</body>
+</html>

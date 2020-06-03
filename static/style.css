@@ -1,0 +1,19 @@
+.centrcontainer{
+    text-align: center;
+    align-items: center;
+    margin-top: 50px;
+}
+
+.inputbt{
+    width: 150px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.settings{
+    margin-top: 15px;
+}
+
+.stg1{
+    margin: 0 auto;
+}
