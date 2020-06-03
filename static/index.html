@@ -5,11 +5,13 @@
     <title>Simulated annealing</title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./styles/style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    <script src="./socket.io.js"></script>
-    <script src="./scripts.js" ></script>
+    <script src="./scripts/graphs.js"></script>
+    <script src="./scripts/socket.io.js"></script>
+    <script src="./scripts/raphael.min.js"></script>
+    <script src="./scripts/scripts.js" ></script>
 </head>
 <body>
 
@@ -21,13 +23,16 @@
 
 
 <div class="container">
-    <div class="centrcontainer" >
+    <div class="centrcontainer" id="settings" >
         <h2 class="text">Data input:</h2> <br>
         <button type="button" class="btn btn-secondary inputbt" id="mf">Manual filling</button>
         <button type="button" class="btn btn-secondary inputbt" id="ff">File</button>
     
         <div id="inputsettings" class="settings" hidden>
             <div>
+                <div hidden id="alert" class="alert alert-danger" role="alert">
+                    
+                </div>
                 <div class="input-group mb-3 stg1" style="width: 500px;">
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1">Adjacency table sizes</span>
@@ -54,11 +59,24 @@
                         <input type="number" min="2" class="form-control" placeholder="Steps" aria-label="" aria-describedby="basic-addon4" id="steps">
                     </div>
                 </div>
-                <!-- <button id="stgbt" type="button" class="btn btn-primary inputbt">Manual filling</button> -->
                 <table id="inputtb" class="table"></table>
                 <button hidden type="button" class="btn btn-primary" id="calculate">Calculate</button>
             </div>
         </div>
+    </div>
+
+    <div id="graphs" class="centrcontainer" hidden>
+        <div >
+            <h2 class="text-center">Minimum path:</h2>
+            <div id = "graph" style="width: 400px; height: 400px; margin: 0 auto; margin-top: -50px;"></div>
+        </div>
+        <div style="margin-top: -50px;">
+            <h2 class="text-center">Path finding chart:</h2>
+            <div id = "chart" style="width: 600px; height: 300px; margin: 0 auto;"></div>
+            <p class="text-center" id="temp">Temp: </p>
+            <p class="text-center" id="step">Step: </p>
+        </div>
+        <button type="button" class="btn btn-primary" id="settingsbt">Settings</button>
     </div>
     
 </div>
