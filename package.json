@@ -1,13 +1,20 @@
 {
   "name": "annealing",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.0.1",
+  "description": "Annealing",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "node src/server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DevelopFroZo/Annealing.git"
   },
   "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DevelopFroZo/Annealing/issues"
+  },
+  "homepage": "https://github.com/DevelopFroZo/Annealing#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
