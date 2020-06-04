@@ -1,6 +1,4 @@
 "use strict";
-
-// const socket = io( "http://localhost:3000" );
 let q = [];
 let N;
 

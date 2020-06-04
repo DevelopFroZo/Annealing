@@ -1,5 +1,6 @@
+let socket = io()
+
 $(document).ready( () => {
-    let socket = io()
 
     $( "#mf" ).click( (e) => {
         let bt = $( "#mf" )
@@ -79,8 +80,8 @@ $(document).ready( () => {
         }
 
         $( "#calculate" ).attr( "hidden", false )
+        $( "#generate" ).attr( "hidden", false )
     } )
-
 
     $( "#calculate" ).click( (e) => {
         $( "#alert" ).find( "p" ).remove();
@@ -161,12 +162,16 @@ $(document).ready( () => {
             if( e === "process" ){
                 graph.drawLine( path )
                 chart.drawLine( pathLength, i );
-                $( "#temp" ).text( "Temp: " + Ti )
-                $( "#step" ).text( "Step: " + i )
+                $( "#temp" ).text( `Step: ${i}; Temp: ${Ti}` )
+                $( "#path" ).text( `Path: ${path}; Length : ${pathLength}` )
             }    
     
-            console.log( data )
+            // console.log( data )
         } )
+    } )
+
+    $( "#recalculate" ).click( (e) => {
+        calculate()
     } )
 
     $( "#settingsbt" ).click( (e) => {
@@ -176,4 +181,79 @@ $(document).ready( () => {
         $( "#graph" ).find( "svg" ).remove()
         $( "#chart" ).find( "svg" ).remove()
     } )
+
+    $( "#generate" ).click( (e) => {
+        let tb = $( '#inputtb' )
+        let size = $( '#stginp' ).val()
+
+        for( let i = 0; i < size - 1; i++ ){
+            for( let j = i + 1; j < size; j++ ){
+                let val = Math.floor( Math.random() * 10 ) + 1
+                $( "#"+i+"_"+j ).val( val )
+                $( "#"+j+"_"+i ).val( val )
+            }
+        }
+    } )
 } )
+
+function calculate(){
+    $( "#graph" ).find( "svg" ).remove()
+    $( "#chart" ).find( "svg" ).remove()
+    
+    let tmin = parseInt( $( '#tmin' ).val() )
+    let tmax = parseInt( $( '#tmax' ).val() )
+    let n = parseInt( $( '#steps' ).val() )
+    let size = $( '#stginp' ).val()
+    let id
+
+    let data = []
+
+    for( let i = 0; i < size - 1; i++ ){
+        let d = []
+        for( let j = i + 1; j < size; j++ ){
+            id = i + "_" + j
+            let val = parseInt( $( "#" + id ).val() )
+            
+            if( val < 1 ){
+                $( "#alert" ).append( $( '<p>', {
+                    "text" : "Weight cannot be less than zero"
+                } ) )
+                $( "#alert" ).attr( "hidden", false )
+                return false
+            }
+
+            d.push( val )
+        }
+        data.push( d ) 
+    }
+
+    console.log( data )
+
+    socket.emit( "/api/annealing", JSON.stringify(
+        {
+            data,
+            Tmin : tmin,
+            Tmax : tmax,
+            N : n,
+        }
+    ) )
+
+    let graph = new Graph( document.getElementById( "graph" ) )
+    graph.drawPoints( size )
+
+    let chart = new Chart( document.getElementById( "chart" ), getMaxSum( data ), n )
+
+    socket.on( "/api/annealing", data => {
+        const { event: e, path, pathLength, Ti, i } = JSON.parse( data ) 
+
+        if( e === "init" ) chart.init( pathLength, i );
+        if( e === "process" ){
+            graph.drawLine( path )
+            chart.drawLine( pathLength, i );
+            $( "#temp" ).text( `Step: ${i}; Temp: ${Ti}` )
+            $( "#path" ).text( `Path: ${path}; Length : ${pathLength}` )
+        }    
+
+        // console.log( data )
+    } )
+}
