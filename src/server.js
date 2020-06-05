@@ -13,6 +13,7 @@ require( "./configs/env" );
 
 // Helpers
 const socket = require( "./socket" );
+const routes = require( "./routes" );
 
 // Consts
 const { PORT, NODE_ENV } = process.env;
@@ -33,8 +34,9 @@ app.use(
   } )
 );
 
-// Socket
+// Upgrade
 socket( io );
+routes( app );
 
 // Run
 app.use(

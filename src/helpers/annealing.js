@@ -19,7 +19,7 @@ function pathLength( data, path ){
 
     if( v0 > v1 ) [ v0, v1 ] = [ v1, v0 ];
 
-    res += data[ v0 ][ v1 - v0 - 1 ]
+    res += data[ v0 ][ v1 - v0 - 1 ];
   }
 
   return res;
@@ -33,7 +33,7 @@ function annealing( data, Tmin, Tmax, N, callback ){
   let oldPathLength = pathLength( data, oldPath );
   let minPath = oldPathLength;
 
-  callback( "init", oldPath, minPath, Tmax, 0 )
+  callback( "init", oldPath, minPath, Tmax, 0 );
 
   for( let i = 0; i < N; i++ ){
     const Ti = Tmax - i * ( ( Tmax - Tmin ) / N );
@@ -47,7 +47,7 @@ function annealing( data, Tmin, Tmax, N, callback ){
     const newPathLength = pathLength( data, newPath );
 
     oldPathLength = pathLength( data, oldPath );
-    
+
     const delta = newPathLength - oldPathLength;
 
     if( delta <= 0 || Math.exp( -delta / Ti ) >= Math.random() ){
