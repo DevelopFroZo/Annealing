@@ -4,7 +4,9 @@ module.exports = index;
 
 const {
   writeFile: fsWriteFile,
-  access: fsAccess
+  access: fsAccess,
+  readdir: fsReaddir,
+  stat: fsStat
 } = require( "fs" );
 const execFile = require( "child_process" ).execFile;
 const { Router } = require( "express" );
@@ -26,6 +28,24 @@ function access( path ){
     fsAccess( path, err => {
       if( err ) res( false );
       else res( true );
+    } );
+  } );
+}
+
+function readdir( path ){
+  return new Promise( ( res, rej ) => {
+    fsReaddir( path, ( err, files ) => {
+      if( err ) rej( err );
+      else res( files );
+    } );
+  } );
+}
+
+function stat( path ){
+  return new Promise( ( res, rej ) => {
+    fsStat( path, ( err, stats ) => {
+      if( err ) rej( err );
+      else res( stats );
     } );
   } );
 }
@@ -69,11 +89,41 @@ async function annealingHandler( { query: { file, Tmax, Tmin, N, k } }, res ){
   } );
 }
 
+async function filesHandler( req, res ){
+  const files = await readdir( "cpp/files" );
+  let result = [];
+
+  if( files.length === 0 )
+    return res.sendStatus( 204 );
+
+  for( let file of files ){
+    const stats = await stat( `cpp/files/${file}` );
+
+    if( stats.isFile() )
+      result.push( [ file, stats.birthtimeMs ] );
+  }
+
+  if( result.length === 0 )
+    return res.sendStatus( 204 );
+
+  result = result
+    .sort( ( a, b ) => {
+      if( a[1] < b[1] ) return 1;
+      if( a[1] > b[1] ) return -1;
+
+      return 0;
+    } )
+    .map( el => el[0] );
+
+  res.json( { files: result } );
+}
+
 function index( server ){
   const router = new Router();
 
   router.post( "/upload", upload.single( "file" ), uploadHandler );
   router.get( "/annealing", annealingHandler );
+  router.get( "/files", filesHandler );
 
   server.use( router );
 }
