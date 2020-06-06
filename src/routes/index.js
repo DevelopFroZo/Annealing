@@ -13,6 +13,7 @@ const { Router } = require( "express" );
 const multer = require( "multer" );
 
 const upload = multer();
+const modes = [ "vector", "parameter", "temperature" ];
 
 function writeFile( path, data ){
   return new Promise( ( res, rej ) => {
@@ -62,24 +63,28 @@ async function uploadHandler( { file, body: { rewrite } }, res ){
   res.sendStatus( 204 );
 }
 
-async function annealingHandler( { query: { file, Tmax, Tmin, N, k } }, res ){
-  Tmax = parseInt( Tmax );
+async function annealingHandler( { query: { file, Tmin, Tmax, mode, N, k, saveMinimumState, shuffleCount } }, res ){
   Tmin = parseInt( Tmin );
+  Tmax = parseInt( Tmax );
   N = parseInt( N );
   k = parseInt( k );
+  shuffleCount = parseInt( shuffleCount );
 
   if(
     typeof file !== "string" || file === "" ||
-    isNaN( Tmax ) ||
     isNaN( Tmin ) ||
+    isNaN( Tmax ) ||
+    !modes.includes( mode ) ||
+    ![ "true", "false" ].includes( saveMinimumState ) ||
     isNaN( N ) || N < 1 ||
-    isNaN( k ) || k < 1
+    isNaN( k ) || k < 1 ||
+    isNaN( shuffleCount ) || shuffleCount < 1
   ) return res.status( 400 ).json( { status: 400, message: "Missing required field" } );
 
   if( !( await access( `cpp/files/${file}` ) ) )
     return res.status( 400 ).json( { status: 400, message: `File not found (${file})` } );
 
-  execFile( "cpp/Annealing.exe", [ `cpp/files/${file}`, Tmin, Tmax, N, k ], ( err, stdout ) => {
+  execFile( "cpp/Annealing.exe", [ `cpp/files/${file}`, Tmin, Tmax, mode, N, k, saveMinimumState, shuffleCount ], ( err, stdout ) => {
     let [ path, pathLength ] = stdout.split( "\n" );
 
     path = path.split( " " ).map( el => parseInt( el ) );
