@@ -85,12 +85,17 @@ async function annealingHandler( { query: { file, Tmin, Tmax, mode, N, k, saveMi
     return res.status( 400 ).json( { status: 400, message: `File not found (${file})` } );
 
   execFile( "cpp/Annealing.exe", [ `cpp/files/${file}`, Tmin, Tmax, mode, N, k, saveMinimumState, shuffleCount ], ( err, stdout ) => {
-    let [ path, pathLength ] = stdout.split( "\n" );
+    let [ minPathAndLength, allMinPaths, minPathLengths ] = stdout.split( "\n" );
 
-    path = path.split( " " ).map( el => parseInt( el ) );
-    pathLength = parseInt( pathLength );
+    minPathAndLength = minPathAndLength.split( " " );
 
-    res.json( { path, pathLength } );
+    const minPathLength = parseInt( minPathAndLength.splice( minPathAndLength.length - 1, 1 ) );
+    const minPath = minPathAndLength.map( el => parseInt( el ) );
+
+    allMinPaths = allMinPaths.split( " " ).map( el => parseInt( el ) );
+    minPathLengths = minPathLengths.split( " " ).map( el => parseInt( el ) );
+
+    res.json( { minPath, minPathLength, allMinPaths, minPathLengths } );
   } );
 }
 
