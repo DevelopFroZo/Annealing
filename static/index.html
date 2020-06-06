@@ -17,13 +17,27 @@
 
 <nav class="navbar navbar-light bg-light">
     <div class = "navbar-header">
-        <a class = "navbar-brand" >
-            <!-- <img src="./images/kappa.png" width="40" height="40" alt=""> -->
+        <a class = "navbar-brand" href="/" >
+            <img src="./images/kappa.png" width="40" height="40" alt="">
             Simulated annealing
         </a>
     </div>
 </nav>
 
+<!-- Прелоадер -->
+<!-- <div class="preloader">
+    <div class="preloader__row">
+      <div class="preloader__item"></div>
+      <div class="preloader__item"></div>
+    </div>
+</div> -->
+
+<div class="container1" id="preloader" style="opacity: 0;">
+    <div class="dash uno"></div>
+    <div class="dash dos"></div>
+    <div class="dash tres"></div>
+    <div class="dash cuatro"></div>
+  </div>
 
 <div class="container">
     <div class="centrcontainer" id="settings" >
@@ -33,44 +47,118 @@
     
         <div id="inputsettings" class="settings" hidden>
             <div>
-                <div hidden id="alert" class="alert alert-danger" role="alert">
-                    
-                </div>
+                <div hidden id="alert" class="alert alert-danger" role="alert"></div>
                 <div class="input-group mb-3 stg1" style="width: 500px;">
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1">Adjacency table sizes</span>
                     </div>
                     <input type="number" min="2" max="13" class="form-control" placeholder="Size" aria-label="" aria-describedby="basic-addon1" id="stginp">
                 </div>
-                <div style="width: 1020px; ">
+                <div style="width: 1020px; margin: 0 auto;">
                     <div class="input-group mb-3 stg1" style="width: 225px; display: inline-flex;">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon2">Tmin</span>
                         </div>
-                        <input type="number" min="2" class="form-control" placeholder="Tmin" aria-label="" aria-describedby="basic-addon2" id="tmin">
+                        <input type="number" min="1" class="form-control" placeholder="Tmin" aria-label="" aria-describedby="basic-addon2" id="tmin">
                     </div>
                     <div class="input-group mb-3 stg1" style="width: 225px; display: inline-flex;">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon3">Tmax</span>
                         </div>
-                        <input type="number" min="2" class="form-control" placeholder="Tmax" aria-label="" aria-describedby="basic-addon3" id="tmax">
+                        <input type="number" min="1" class="form-control" placeholder="Tmax" aria-label="" aria-describedby="basic-addon3" id="tmax">
                     </div>
                     <div class="input-group mb-3 stg1" style="width: 225px; display: inline-flex;">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon4">Steps</span>
                         </div>
-                        <input type="number" min="2" class="form-control" placeholder="Steps" aria-label="" aria-describedby="basic-addon4" id="steps">
+                        <input type="number" min="1" class="form-control" placeholder="Steps" aria-label="" aria-describedby="basic-addon4" id="steps">
                     </div>
                     <div class="input-group mb-3 stg1" style="width: 325px; display: inline-flex;">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon5">Number of starts</span>
                         </div>
-                        <input type="number" min="2" class="form-control" placeholder="Starts" aria-label="" aria-describedby="basic-addon5" id="starts">
+                        <input type="number" min="1" class="form-control" placeholder="Starts" aria-label="" aria-describedby="basic-addon5" id="starts">
                     </div>
+                    
                 </div>
                 <table id="inputtb" class="table"></table>
                 <button hidden type="button" class="btn btn-primary" id="generate">Generate</button>
                 <button hidden type="button" class="btn btn-primary" id="calculate">Calculate</button>
+            </div>
+        </div>
+
+        <div id="inputfiles" class="settings" hidden>
+            <div>
+                <div hidden id="alertf" class="alert alert-danger" role="alert">  </div>
+
+                <div class="input-group" style= "width: 400px; margin: 0 auto;">
+                    <div class="custom-file">
+                      <input type="file" class="custom-file-input" id="inputGroupFile01" accept=".txt" data-max-file-size="1M">
+                      <label class="custom-file-label" for="inputGroupFile01" id="inputGroupFile01label">Choose file</label>
+                    </div>
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-secondary" type="button" id="fileupload">Upload file</button>
+                    </div>
+                </div>
+
+                <div class="input-group mb-3" style= "width: 325px; margin-bottom: 15px; margin: 15px auto;">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="fileselect">Select file</label>
+                    </div>
+                    <select class= "custom-select" id = "fileselect" hidden></select>
+                </div>
+
+                <div style="width: 1020px; margin: 0 auto;">
+                    <div class="input-group mb-3 stg1" style="width: 225px; display: inline-flex;">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon2f">Tmin</span>
+                        </div>
+                        <input type="number" min="1" class="form-control" placeholder="Tmin" aria-label="" aria-describedby="basic-addon2f" id="tminf">
+                    </div>
+                    <div class="input-group mb-3 stg1" style="width: 225px; display: inline-flex;">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon3f">Tmax</span>
+                        </div>
+                        <input type="number" min="1" class="form-control" placeholder="Tmax" aria-label="" aria-describedby="basic-addon3f" id="tmaxf">
+                    </div>
+                    <div class="input-group mb-3 stg1" style="width: 225px; display: inline-flex;">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon4f">Steps</span>
+                        </div>
+                        <input type="number" min="1" class="form-control" placeholder="Steps" aria-label="" aria-describedby="basic-addon4f" id="stepsf">
+                    </div>
+                    <div class="input-group mb-3 stg1" style="width: 325px; display: inline-flex;">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon5f">Number of starts</span>
+                        </div>
+                        <input type="number" min="1" class="form-control" placeholder="Starts" aria-label="" aria-describedby="basic-addon5f" id="startsf">
+                    </div>
+                    <div class="input-group mb-3" style= "width: 425px; display: inline-flex;">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="modef">Mode</label>
+                        </div>
+                        <select class= "custom-select" id = "modef">
+                            <option value="temperature" selected>depends on temperature</option>
+                            <option value="parameter">fixed number of permutations</option>
+                            <option value="vector">depends on the length of the array</option>
+                        </select>
+                    </div>
+                    <div class="input-group mb-3 stg1" style="width: 275px; display: inline-flex;">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon6f">Shuffle count</span>
+                        </div>
+                        <input type="number" min="1" class="form-control" placeholder="Shuffle count" aria-label="" aria-describedby="basic-addon6f" id="shufflecountf">
+                    </div>
+                    <div class="input-group mb-3" style="width: 275px; margin: 0 auto;">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <input type="checkbox" id="saveMinimumStatef">
+                            </div>
+                        </div>
+                        <p class="form-control">Save minimum state</p>
+                    </div>
+                </div>  
+                <button type="button" class="btn btn-primary" id="calculatef">Calculate</button>
             </div>
         </div>
     </div>
@@ -89,7 +177,19 @@
         <button type="button" class="btn btn-primary" id="settingsbt">Settings</button>
         <button type="button" class="btn btn-primary" id="recalculate">Recalculate</button>
     </div>
-    
-</div>
+
+    <div id="graphsf" class="centrcontainer" hidden>
+        <div class="line">
+            <div>
+                <h2 class="text-center">Minimum path:</h2>
+                <div id = "graphf" style="width: 800px; height: 800px; margin: 0 auto; margin-top: -50px;"></div>
+                <p class="text-center" id="pathf" style="margin-top: -50px;">Path: </p>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary" id="graphvf" style="width: 200px;" hidden>Graph</button>
+        <button type="button" class="btn btn-primary" id="settingsbtf" style="width: 200px;">Settings</button>
+        <button type="button" class="btn btn-primary" id="recalculatef" style="width: 200px;">Recalculate</button>
+        <button type="button" class="btn btn-primary" id="charts" style="width: 200px;">Charts</button>
+    </div>
 </body>
 </html>
