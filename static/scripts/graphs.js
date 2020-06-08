@@ -136,7 +136,6 @@ class Chart2{
     }
 
     this.paper.path( path );
-    console.log( path );
   }
 }
 
