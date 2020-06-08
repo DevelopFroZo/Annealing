@@ -91,7 +91,7 @@ $(document).ready( () => {
     } )
 
     $( "#recalculatef" ).click( () => {
-        $( "#calculatef" ).click()    
+        $( "#calculatef" ).click()  
     } )
 
     $( "#settingsbtf" ).click( () => {
@@ -102,7 +102,10 @@ $(document).ready( () => {
     } )
 
     $( "#calculatef" ).click( async e => {
+        $( "#graphvf" ).click()  
         $( "#graphf" ).find( "svg" ).remove()
+        $( "#minpaths" ).find( "svg" ).remove()
+        $( "#minpathlengths" ).find( "svg" ).remove()
         $( "#graphsf" ).attr( "hidden", true )
 
         file = $( "#fileselect" ).val()
@@ -114,7 +117,7 @@ $(document).ready( () => {
         let saveMinimumState = $( "#saveMinimumStatef" ).is(':checked')
         let suffleCount = $( "#shufflecountf" ).val()
 
-        console.log( file, tmin, tmax, mode, n, k, saveMinimumState, suffleCount, `/annealing?file=${file}&Tmin=${tmin}&Tmax=${tmax}&mode=${mode}&N=${n}&k=${k}&saveMinimumState=${saveMinimumState}%shuffleCount=${suffleCount}` )
+        // console.log( file, tmin, tmax, mode, n, k, saveMinimumState, suffleCount, `/annealing?file=${file}&Tmin=${tmin}&Tmax=${tmax}&mode=${mode}&N=${n}&k=${k}&saveMinimumState=${saveMinimumState}%shuffleCount=${suffleCount}` )
 
         $( "#settings" ).attr( "hidden", true )
         $( "#preloader" ).animate( {
@@ -131,15 +134,41 @@ $(document).ready( () => {
         console.log( result )
 
         $( "#graphsf" ).attr( "hidden", false )
+        $( "#chartsfd" ).attr( "hidden", false )
 
         let graph = new Graph( document.getElementById( "graphf" ) )
         graph.drawPoints( result.minPath.length )
         graph.drawLine( result.minPath )
         $( "#pathf" ).text( `Path: ${result.minPathLength}` )
+
+        if( result.allMinPaths.length > 1 ){
+            $( "#minpathsH" ).attr( "hidden", false );
+            $( "#minpaths" ).attr( "hidden", false );
+            let minPaths = new Chart2( document.getElementById( "minpaths" ) )
+            minPaths.draw( result.allMinPaths )
+        } else {
+            $( "#minpathsH" ).attr( "hidden", true );
+            $( "#minpaths" ).attr( "hidden", true );
+        }
+
+        let minpathlengths = new Chart2( document.getElementById( "minpathlengths" ) )
+        minpathlengths.draw( result.minPathLengths )
+
+        $( "#chartsfd" ).attr( "hidden", true )
     } )
 
     $( "#charts" ).click( e => {
-        
+        $( "#graphfd" ).attr( "hidden", true )
+        $( "#charts" ).attr( "hidden", true )
+        $( "#graphvf" ).attr( "hidden", false )
+        $( "#chartsfd" ).attr( "hidden", false )
+    } )
+
+    $( "#graphvf" ).click( e => {
+        $( "#chartsfd" ).attr( "hidden", true )
+        $( "#graphvf" ).attr( "hidden", true )
+        $( "#charts" ).attr( "hidden", false )
+        $( "#graphfd" ).attr( "hidden", false )    
     } )
 
     $( '#stginp' ).change( (e) => {

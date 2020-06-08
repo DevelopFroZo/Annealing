@@ -113,25 +113,25 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon2f">Tmin</span>
                         </div>
-                        <input type="number" min="1" class="form-control" placeholder="Tmin" aria-label="" aria-describedby="basic-addon2f" id="tminf">
+                        <input type="number" min="1" class="form-control" placeholder="Tmin" value="0" aria-label="" aria-describedby="basic-addon2f" id="tminf">
                     </div>
                     <div class="input-group mb-3 stg1" style="width: 225px; display: inline-flex;">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon3f">Tmax</span>
                         </div>
-                        <input type="number" min="1" class="form-control" placeholder="Tmax" aria-label="" aria-describedby="basic-addon3f" id="tmaxf">
+                        <input type="number" min="1" class="form-control" placeholder="Tmax" value="15" aria-label="" aria-describedby="basic-addon3f" id="tmaxf">
                     </div>
                     <div class="input-group mb-3 stg1" style="width: 225px; display: inline-flex;">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon4f">Steps</span>
                         </div>
-                        <input type="number" min="1" class="form-control" placeholder="Steps" aria-label="" aria-describedby="basic-addon4f" id="stepsf">
+                        <input type="number" min="1" class="form-control" placeholder="Steps" value="200" aria-label="" aria-describedby="basic-addon4f" id="stepsf">
                     </div>
                     <div class="input-group mb-3 stg1" style="width: 325px; display: inline-flex;">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon5f">Number of starts</span>
                         </div>
-                        <input type="number" min="1" class="form-control" placeholder="Starts" aria-label="" aria-describedby="basic-addon5f" id="startsf">
+                        <input type="number" min="1" class="form-control" placeholder="Starts" value="200" aria-label="" aria-describedby="basic-addon5f" id="startsf">
                     </div>
                     <div class="input-group mb-3" style= "width: 425px; display: inline-flex;">
                         <div class="input-group-prepend">
@@ -147,7 +147,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon6f">Shuffle count</span>
                         </div>
-                        <input type="number" min="1" class="form-control" placeholder="Shuffle count" aria-label="" aria-describedby="basic-addon6f" id="shufflecountf">
+                        <input type="number" min="1" class="form-control" placeholder="Shuffle count" value="45" aria-label="" aria-describedby="basic-addon6f" id="shufflecountf">
                     </div>
                     <div class="input-group mb-3" style="width: 275px; margin: 0 auto;">
                         <div class="input-group-prepend">
@@ -179,11 +179,17 @@
     </div>
 
     <div id="graphsf" class="centrcontainer" hidden>
-        <div class="line">
-            <div>
+        <div class="line" >
+            <div id="graphfd" >
                 <h2 class="text-center">Minimum path:</h2>
                 <div id = "graphf" style="width: 800px; height: 800px; margin: 0 auto; margin-top: -50px;"></div>
                 <p class="text-center" id="pathf" style="margin-top: -50px;">Path: </p>
+            </div>
+            <div id="chartsfd">
+                <h2 class="text-center" id="minpathsH">Finding the Minimum Path:</h2>
+                <div id = "minpaths" style="width: 800px; height: 350px; margin: 0 auto;"></div>
+                <h2 class="text-center">All minimal ways:</h2>
+                <div id = "minpathlengths" style="width: 800px; height: 344px; margin: 0 auto;"></div>
             </div>
         </div>
         <button type="button" class="btn btn-primary" id="graphvf" style="width: 200px;" hidden>Graph</button>

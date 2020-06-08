@@ -135,8 +135,9 @@ class Chart2{
         path += "L";
     }
 
-    this.paper.path( path );
-    console.log( path );
+    this.paper.path( path ).attr( {
+      "stroke" : "#0062cc"
+    } );
   }
 }
 
