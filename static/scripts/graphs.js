@@ -103,6 +103,43 @@ class Chart{
   }
 }
 
+class Chart2{
+  constructor( el ){
+    this.el = el;
+    this.width = el.offsetWidth;
+    this.height = el.offsetHeight;
+    this.paper = new Raphael( el, this.width, this.height );
+  }
+
+  draw( pathLengths ){
+    let min = null;
+    let max = null;
+
+    this.paper.clear();
+
+    for( let pathLength of pathLengths ){
+      if( min === null || pathLength < min ) min = pathLength;
+      if( max === null || pathLength > max ) max = pathLength;
+    }
+
+    const delta = max - min;
+    let path = "M";
+
+    for( let [ i, pathLength ] of Object.entries( pathLengths ) ){
+      const x = 10 + ( this.width - 20 ) / ( pathLengths.length - 1 ) * i;
+      const y = this.height - 10 - ( this.height - 20 ) / delta * ( pathLength - min );
+
+      path += `${x},${y}`;
+
+      if( i < pathLengths.length - 1 )
+        path += "L";
+    }
+
+    this.paper.path( path );
+    console.log( path );
+  }
+}
+
 function getMaxSum( data ){
   let sum = 0;
   let gmax = 0;
@@ -121,41 +158,3 @@ function getMaxSum( data ){
 
   return sum;
 }
-
-function index(){
-  const note = document.getElementById( "note" );
-  // const graph = new Graph( note );
-
-  // document.getElementById( "btn" ).addEventListener( "click", go );
-
-  // socket.on( "/api/annealing", data => {
-  //   const { event: e, path, pathLength, i } = JSON.parse( data );
-
-  //   if( e === "init" ) chart.init( pathLength, i );
-  //   else chart.drawLine( pathLength, i );
-
-  //   if( e === "end" ) console.log( `path: ${path}, pathLength: ${pathLength}` );
-  // } );
-
-  q = [
-    [ 1, 2, 2, 2 ],
-    [ 1, 2, 2 ],
-    [ 1, 2 ],
-    [ 2 ]
-  ];
-  N = 100;
-  const max = getMaxSum( q );
-  // const chart = new Chart( note, max, N );
-
-  // Generator
-  // for( let i = 0; i < 9; i++ ){
-  //   const w = [];
-  //
-  //   for( let j = i + 1; j < 10; j++ )
-  //     w.push( Math.floor( Math.random() * 10 ) + 1 );
-  //
-  //   q.push( w );
-  // }
-}
-
-window.addEventListener( "load", index );
