@@ -1,6 +1,8 @@
 "use strict";
 let q = [];
 let N;
+// let strokeColor = "#0062cc"
+let strokeColor = "#000000"
 
 function rotatePoint( turn_, turnAround, angel ){
   let turn, turned;
@@ -39,11 +41,11 @@ class Graph{
 
     for( let [ i, point ] of Object.entries( this.rotatedPoints ) ){
       this.paper.circle( point[0], point[1], 10 ).attr( {
-          "stroke" : "#0062cc"
+          "stroke" : strokeColor
       } );
       this.paper.text( point[0], point[1], i ).attr( {
         "font-size" : "18px",
-        "fill" : "#0062cc",
+        "fill" : strokeColor,
         "stroke" : null
      } );
     }
@@ -62,7 +64,7 @@ class Graph{
     }
 
     this.path = this.paper.path( st ).attr( {
-      "stroke" : "#0062cc"
+      "stroke" : strokeColor
   } );
   }
 }
@@ -96,7 +98,7 @@ class Chart{
       `M${this.oldPoint[0]},${this.oldPoint[1]}
       L${newPoint[0]},${newPoint[1]}`
     ).attr( {
-      "stroke" : "#0062cc"
+      "stroke" : strokeColor
   } );
 
     this.oldPoint = newPoint;
@@ -136,7 +138,7 @@ class Chart2{
     }
 
     this.paper.path( path ).attr( {
-      "stroke" : "#0062cc"
+      "stroke" : strokeColor
     } );
   }
 }
