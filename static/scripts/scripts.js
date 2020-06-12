@@ -1,4 +1,6 @@
 let socket = io()
+let file
+let files
 
 $(document).ready( () => {
 
@@ -9,17 +11,164 @@ $(document).ready( () => {
             bt.attr( "class", "btn btn-primary inputbt" )
             $( "#ff" ).attr( "class", "btn btn-secondary inputbt" )
             $( "#inputsettings" ).attr( "hidden", false )
+            $( '#inputfiles' ).attr( "hidden", true )
         }
     } )
 
-    $( "#ff" ).click( (e) => {
+    $( "#ff" ).click( async (e) => {
         let bt = $( "#ff" )
+        $( "#alertf" ).find( "p" ).remove();
+        $( "#alertf" ).attr( "hidden", true )
 
         if( bt.attr( "class" ) == "btn btn-secondary inputbt" ){
             bt.attr( "class", "btn btn-primary inputbt" )
             $( "#mf" ).attr( "class", "btn btn-secondary inputbt" )
             $( "#inputsettings" ).attr( "hidden", true )
+            $( '#inputfiles' ).attr( "hidden", false )
         }
+
+        let res = await fetch( "/files" )
+
+        if( res.status == 204 ){
+            $( "#alertf" ).append( $( '<p>', {
+                "text" : "File not found, upload your"
+            } ) )
+            $( "#alertf" ).attr( "hidden", false )
+        } else {
+            files = []
+            $( "#fileselect" ).find( "option" ).remove();
+            files = (await res.json()).files
+
+            $( "#fileselect" ).attr( "hidden", false )
+
+            for( let file of files ){
+                $( "#fileselect" ).append( $( '<option>' , {
+                    "value" : file,
+                    "text" : file
+                } ) )
+            }
+
+            $( "#selectfile" ).attr( "hidden", false )
+        }
+    } )
+
+    $( "#inputGroupFile01" ).change( (e) => {
+        document.getElementById( "inputGroupFile01label" ).innerHTML = e.target.files[0].name 
+        file = e.target.files[0]
+    } )
+
+    $( "#fileupload" ).click( async e => {
+        $( "#alertf" ).find( "p" ).remove();
+        $( "#alertf" ).attr( "hidden", true )
+
+        for( let f of files ){
+            if( f == file.name ){
+                $( "#alertf" ).append( $( '<p>', {
+                    "text" : "File already exists"
+                } ) )
+                $( "#alertf" ).attr( "hidden", false )
+                return false
+            }
+        }
+
+        let body = new FormData()
+
+        body.append( "file", file )
+        body.append( "rewrite", true )
+
+        let res = await fetch( "/upload", {
+            method : "POST",
+            body
+        } )
+
+        if( res.status !== 204 ){
+            console.log( await res.json() )
+        }
+
+        console.log( res )
+
+        $( "#ff" ).click()
+    } )
+
+    $( "#recalculatef" ).click( () => {
+        $( "#calculatef" ).click()  
+    } )
+
+    $( "#settingsbtf" ).click( () => {
+        $( "#settings" ).attr( "hidden", false )
+        $( "#graphsf" ).attr( "hidden", true )
+
+        $( "#graphf" ).find( "svg" ).remove()
+    } )
+
+    $( "#calculatef" ).click( async e => {
+        $( "#graphvf" ).click()  
+        $( "#graphf" ).find( "svg" ).remove()
+        $( "#minpaths" ).find( "svg" ).remove()
+        $( "#minpathlengths" ).find( "svg" ).remove()
+        $( "#graphsf" ).attr( "hidden", true )
+
+        file = $( "#fileselect" ).val()
+        let tmin = $( "#tminf" ).val()
+        let tmax = $( "#tmaxf" ).val()
+        let mode = $( "#modef" ).val()
+        let n = $( "#stepsf" ).val()
+        let k = $( "#startsf" ).val()
+        let saveMinimumState = $( "#saveMinimumStatef" ).is(':checked')
+        let suffleCount = $( "#shufflecountf" ).val()
+
+        // console.log( file, tmin, tmax, mode, n, k, saveMinimumState, suffleCount, `/annealing?file=${file}&Tmin=${tmin}&Tmax=${tmax}&mode=${mode}&N=${n}&k=${k}&saveMinimumState=${saveMinimumState}%shuffleCount=${suffleCount}` )
+
+        $( "#settings" ).attr( "hidden", true )
+        $( "#preloader" ).animate( {
+            opacity : 1
+        }, 200 )
+
+        let res = await fetch( `/annealing?file=${file}&Tmin=${tmin}&Tmax=${tmax}&mode=${mode}&N=${n}&k=${k}&saveMinimumState=${saveMinimumState}&shuffleCount=${suffleCount}` )
+
+        let result = await res.json()
+
+        $( "#preloader" ).animate( {
+            opacity : 0
+        }, 200 )
+        console.log( result )
+
+        $( "#graphsf" ).attr( "hidden", false )
+        $( "#chartsfd" ).attr( "hidden", false )
+
+        let graph = new Graph( document.getElementById( "graphf" ) )
+        graph.drawPoints( result.minPath.length )
+        graph.drawLine( result.minPath )
+        $( "#pathf" ).text( `Path: ${result.minPathLength}` )
+
+        if( result.allMinPaths.length > 1 ){
+            $( "#minpathsH" ).attr( "hidden", false );
+            $( "#minpaths" ).attr( "hidden", false );
+            let minPaths = new Chart2( document.getElementById( "minpaths" ) )
+            minPaths.draw( result.allMinPaths )
+        } else {
+            $( "#minpathsH" ).attr( "hidden", true );
+            $( "#minpaths" ).attr( "hidden", true );
+        }
+
+        let minpathlengths = new Chart2( document.getElementById( "minpathlengths" ) )
+        minpathlengths.draw( result.minPathLengths )
+
+        $( "#chartsfd" ).attr( "hidden", true )
+    } )
+
+    $( "#charts" ).click( e => {
+        $( "#graphfd" ).attr( "hidden", true )
+        $( "#charts" ).attr( "hidden", true )
+        $( "#graphvf" ).attr( "hidden", false )
+        $( "#chartsfd" ).attr( "hidden", false )
+    } )
+
+    $( "#graphvf" ).click( e => {
+        $( "#chartsfd" ).attr( "hidden", true )
+        $( "#graphvf" ).attr( "hidden", true )
+        $( "#charts" ).attr( "hidden", false )
+        $( "#graphfd" ).attr( "hidden", false )    
     } )
 
     $( '#stginp' ).change( (e) => {
